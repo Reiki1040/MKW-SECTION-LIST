@@ -1,0 +1,22 @@
+{
+  "name": "mkw-section",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder",
+    "rebuild": "electron-rebuild"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^25.0.0",
+    "electron-rebuild": "^3.2.9"
+  },
+  "dependencies": {
+    "konva": "^9.2.0",
+    "quill": "^1.3.7"
+  }
+}

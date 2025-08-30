@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>マリオカートワールド エディター</title>
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="./node_modules/quill/dist/quill.snow.css" />
+    <script src="./node_modules/konva/konva.min.js"></script>
+    <!-- ここを追加：UMD版 Quill を読み込む -->
+    <script src="./node_modules/quill/dist/quill.js"></script>
+
+</head>
+<body>
+
+    <header id="app-header">
+        <img src="./images/title-logo.png" alt="マリオカートワールド セクション攻略" id="app-title-logo">
+    </header>
+
+    <div id="screen-menu">
+        <button id="back-to-start-button" class="hidden">← 始点選択へ</button>
+        <h2>始点コース</h2>
+        <div id="course-list">
+            </div>
+    </div>
+
+    <div id="screen-canvas" class="hidden">
+
+        <div id="main-editor-area">
+            <h2 id="route-title">ルート名がここに表示されます</h2>
+            <div class="toolbar">
+                <button id="back-button">← 終点選択へ</button>
+                <button id="clear-button">クリア</button>
+                
+                <button id="pen-button" class="tool-button" title="ペン">
+                    <img src="./images/pen-icon.png" alt="ペン">
+                </button>
+                <button id="eraser-button" class="tool-button" title="消しゴム">
+                    <img src="./images/eraser-icon.png" alt="消しゴム">
+                </button>
+                <button id="line-button" class="tool-button">直線</button>
+                <button id="stamp-button" class="tool-button">スタンプ</button>
+                <button id="text-button" class="tool-button">テキスト</button>
+                
+                <div id="pen-controls" class="tool-controls">
+                    <div class="color-controls">
+                        <button class="color-button pen-color" data-color="black"></button>
+                        <button class="color-button pen-color" data-color="white"></button>
+                        <button class="color-button pen-color" data-color="red"></button>
+                        <button class="color-button pen-color" data-color="blue"></button>
+                        <button class="color-button pen-color" data-color="yellow"></button>
+                        <button class="color-button pen-color" data-color="green"></button>
+                    </div>
+                    <div class="size-controls">
+                        <input type="range" id="pen-size-slider" min="1" max="50" value="5">
+                        <div id="pen-size-preview"></div>
+                    </div>
+                </div>
+
+                <div id="eraser-controls" class="tool-controls hidden">
+                    <div class="size-controls">
+                        <input type="range" id="eraser-size-slider" min="1" max="100" value="20">
+                        <div id="eraser-size-preview"></div>
+                    </div>
+                </div>
+
+                <div id="line-controls" class="tool-controls hidden">
+                    <div class="color-controls">
+                        <button class="color-button line-color" data-color="black"></button>
+                        <button class="color-button line-color" data-color="white"></button>
+                        <button class="color-button line-color" data-color="red"></button>
+                        <button class="color-button line-color" data-color="blue"></button>
+                        <button class="color-button line-color" data-color="yellow"></button>
+                        <button class="color-button line-color" data-color="green"></button>
+                    </div>
+                    <div class="size-controls">
+                        <input type="range" id="line-size-slider" min="1" max="50" value="5">
+                        <div id="line-size-preview"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="stamp-selection-panel" class="hidden">
+                <h4>スタンプ一覧</h4>
+                <div class="stamp-list">
+                    <img src="./images/kinoko.png" class="stamp-image" data-src="./images/kinoko.png" title="キノコ">
+                    <img src="./images/star.png" class="stamp-image" data-src="./images/star.png" title="スター">
+                    <img src="./images/killer.png" class="stamp-image" data-src="./images/killer.png" title="キラー">
+                    <img src="./images/golden_kinoko.png" class="stamp-image" data-src="./images/golden_kinoko.png" title="金キノコ">
+                    <img src="./images/mega_kinoko.png" class="stamp-image" data-src="./images/mega_kinoko.png" title="巨大キノコ">
+                    <img src="./images/itembox.png" class="stamp-image" data-src="./images/itembox.png" title="アイテムボックス">
+                </div>
+            </div>
+
+            <div id="editor-canvas-container"></div>
+        </div>
+
+        <div id="memo-container">
+            <h4>メモ</h4>
+            <div id="memo-editor"></div>
+        </div>
+
+    </div>
+ 
+    <script src="./renderer.js"></script>
+</body>
+</html>

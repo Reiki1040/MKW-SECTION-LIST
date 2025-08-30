@@ -1,0 +1,337 @@
+/* --- 全体のスタイル --- */
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap');
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'M PLUS Rounded 1c', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #1a202c; /* ダークグレーの背景 */
+    color: #e2e8f0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- ヘッダー（タイトルバー） --- */
+#app-header {
+    background-color: #2d3748; /* 少し明るいダークグレー */
+    padding: 10px 20px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #4a5568;
+}
+#app-title-logo {
+    height: 35px;
+    width: auto;
+}
+
+/* --- 画面全体のコンテナースタイル --- */
+#screen-menu { /* ★★★ ここを修正 ★★★ */
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 24px;
+    box-sizing: border-box;
+    gap: 24px;
+    overflow-y: auto; /* スクロールを有効化 */
+    padding-right: 14px; /* スクロールバー用の余白 */
+}
+
+#screen-canvas {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    padding: 24px;
+    box-sizing: border-box;
+    gap: 24px;
+}
+
+h2, h4 {
+    color: #f7fafc;
+    flex-shrink: 0;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: 800; /* 太めのフォント */
+    letter-spacing: 1px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* --- ボタンの共通スタイル --- */
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 14px rgba(0,0,0,0.2);
+}
+button:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* --- コース選択画面のスタイル --- */
+#course-list { /* ★★★ ここを修正 ★★★ */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 20px;
+    /* 以前追加したスクロール関連のスタイルを削除 */
+}
+
+.course-button {
+    background-color: #2d3748;
+    border: 2px solid #4a5568;
+    color: #e2e8f0;
+    padding: 12px;
+    height: 140px; /* カードの高さを固定 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; /* 中の要素を均等に配置 */
+    text-align: center;
+    gap: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    transform: none;
+}
+
+.course-button:hover {
+    transform: translateY(-4px); /* ホバー時の浮き上がりを少し大きく */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    border-color: #63b3ed;
+    background-color: #4a5568;
+}
+
+.course-button img {
+    width: 100%; /* 幅を親要素に合わせる */
+    height: 70px; /* 画像の高さを固定 */
+    object-fit: contain;
+    border-radius: 4px; /* 画像の角を少し丸める */
+    box-shadow: none;
+    border: none;
+    transition: transform 0.2s ease;
+}
+
+.course-button:hover img {
+    transform: scale(1.03); /* ホバー時に画像を少しだけ拡大 */
+}
+
+.course-button span {
+    display: -webkit-box;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.3;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 34px; /* 2行分の高さを確保 */
+}
+
+#back-to-start-button {
+    width: 100%;
+    background-color: #4a5568;
+    color: #e2e8f0;
+    margin-bottom: 15px;
+}
+
+
+/* --- キャンバス画面のスタイル --- */
+#main-editor-area, #memo-container {
+    background-color: #2d3748;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+}
+#main-editor-area {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 70%;
+    min-width: 0;
+}
+#editor-canvas-container {
+    flex-grow: 1;
+    background-color: white;
+    border-radius: 8px;
+    min-height: 200px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+.toolbar {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+.tool-button, #back-button {
+    background-color: #4a5568;
+    color: #e2e8f0;
+}
+.tool-button img {
+    height: 18px;
+    filter: invert(90%); /* アイコンを白っぽく */
+    vertical-align: middle;
+}
+.tool-button.active {
+    background-color: #63b3ed; /* アクティブなボタンは明るい青 */
+    color: #1a202c;
+}
+.tool-button.active img {
+    filter: invert(10%);
+}
+#clear-button {
+    background-color: #c53030; /* アクセントレッド */
+    color: white;
+}
+#clear-button:hover {
+    background-color: #e53e3e;
+}
+
+/* --- ツール詳細設定 --- */
+.tool-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #4a5568;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+.color-controls, .size-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.color-button {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.5);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+}
+.color-button:hover {
+    transform: scale(1.15);
+}
+.color-button[data-color="black"] { background-color: black; }
+.color-button[data-color="white"] { background-color: white; }
+.color-button[data-color="red"] { background-color: #e53e3e; }
+.color-button[data-color="blue"] { background-color: #4299e1; }
+.color-button[data-color="yellow"] { background-color: #ecc94b; }
+.color-button[data-color="green"] { background-color: #48bb78; }
+
+#pen-size-preview, #line-size-preview, #eraser-size-preview {
+    border-radius: 50%;
+    transition: all 0.1s;
+    box-sizing: border-box;
+    background-color: #cbd5e0;
+}
+
+/* --- スタンプパネル --- */
+#stamp-selection-panel {
+    position: absolute;
+    top: 155px; /* ツールバーの高さに合わせて調整 */
+    left: 20px;
+    background-color: #4a5568;
+    border: 1px solid #718096;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    z-index: 20;
+}
+#stamp-selection-panel h4 {
+    color: #f7fafc;
+}
+.stamp-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+.stamp-image {
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    background-color: rgba(255,255,255,0.1);
+}
+.stamp-image:hover {
+    transform: scale(1.1);
+    border-color: #63b3ed;
+}
+
+/* --- テキストエディタオーバーレイ --- */
+#text-editor {
+    position: absolute;
+    border: 2px dashed #63b3ed;
+    background-color: rgba(45, 55, 72, 0.95);
+    color: white;
+    padding: 5px;
+    font-size: 20px;
+    z-index: 100;
+    resize: none;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+/* --- メモ機能のスタイル --- */
+#memo-container {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 30%;
+    min-width: 0;
+}
+#memo-editor {
+    flex-grow: 1;
+    border-radius: 8px;
+    color: #1a202c;
+    background-color: #edf2f7;
+}
+.ql-toolbar.ql-snow {
+    background-color: #f7fafc;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+}
+.ql-container.ql-snow {
+    background-color: #edf2f7;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border: none;
+}
+
+/* --- スクロールバーのスタイル --- */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #2d3748; /* スクロールバーの背景色 */
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #718096; /* スクロールバーのつまみ部分 */
+    border-radius: 10px;
+    border: 3px solid #2d3748; /* つまみの周りに余白を作る */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #a0aec0;
+}
