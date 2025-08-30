@@ -1,8 +1,3 @@
-// Konva は index.html の <script> で読み込み
-// Quill は preload.js で window.QuillBridge.load() から取得（ESMをpreloadで読み込む）
-
-
-// --- HTML要素取得 ---
 const screenMenu = document.getElementById('screen-menu'),
   screenCanvas = document.getElementById('screen-canvas'),
   courseListDiv = document.getElementById('course-list'),
@@ -32,13 +27,8 @@ const screenMenu = document.getElementById('screen-menu'),
 
 const routeTitle = document.getElementById('route-title');
 
-// --- メモ機能関連 ---
 let quill = null;
-// renderer.js
 
-// --- coursesデータ ---
-
-// ステップ1: アイコンパスを含まない「基本データ」を定義
 const courseData = [
   { id: 1, name: 'マリオブラザーズサーキット', connections: [2, 3, 5, 6, 7, 25, 26] },
   { id: 2, name: 'トロフィーシティ', connections: [1, 3, 4, 5, 7, 13, 14, 15, 24, 25] },
@@ -60,8 +50,8 @@ const courseData = [
   { id: 18, name: 'ディノディノジャングル', connections: [13, 14, 16, 17, 19] },
   { id: 19, name: 'ハテナしんでん', connections: [13, 14, 16, 17, 18] },
   { id: 20, name: 'プクプクフォールズ', connections: [9, 10, 12, 14, 15, 17, 21, 24, 25] },
-  { id: 21, name: 'ショーニューロード', connections: [] },
-  { id: 22, name: 'おばけシネマ', connections: [] },
+  { id: 21, name: 'ショーニューロード', connections: [9, 10, 11, 20, 22, 24, 26, 28, 29 ] },
+  { id: 22, name: 'おばけシネマ', connections: [10, 21, 23, 28, 29,] },
   { id: 23, name: 'ホネホネツイスター', connections: [7, 8, 22, 24, 26, 27, 28, 29] },
   { id: 24, name: 'モーモーカントリー', connections: [2, 9, 15, 20, 21, 23, 25, 26, 29] },
   { id: 25, name: 'チョコマウンテン', connections: [1, 2, 3, 6, 7, 15, 20, 24, 26, 27] },
@@ -71,28 +61,25 @@ const courseData = [
   { id: 29, name: 'マリオサーキット', connections: [10, 15, 21, 22, 23, 24, 26, 27, 28] },
   { id: 30, name: 'レインボーロード', connections: [] }
 ];
-// ステップ2: 基本データから、iconプロパティを自動的に追加した「完成版データ」を生成
+
 const courses = courseData.map(course => ({
-  ...course, // 元の id, name, connections をコピー
-  icon: `./images/course-icons/${course.id}.png` // iconプロパティを自動生成
+  ...course,
+  icon: `./images/course-icons/${course.id}.png`
 }));
 
 
 let startCourseId = null;
 let endCourseId = null;
 
-// --- キャンバス関連 ---
 let stage = null, drawLayer = null, objectsLayer = null, uiLayer = null, tr = null, isPaint = false, lastLine;
 let currentMode = 'pen';
 let currentPenColor = 'black', currentLineColor = 'black', currentPenSize = 5, currentEraserSize = 20, currentLineSize = 5;
 
-// ルートごとの保存キー
 function getCurrentRouteKey() {
   if (!startCourseId || !endCourseId) return null;
   return `canvas_${startCourseId}-${endCourseId}`;
 }
 
-// 保存（draw + obj をまとめて）
 function autoSaveCanvas() {
   const key = getCurrentRouteKey();
   if (!key || !drawLayer || !objectsLayer) return;
@@ -101,31 +88,24 @@ function autoSaveCanvas() {
   console.log(`キャンバスの状態を ${key} に自動保存しました。`);
 }
 
-// ---------- メモ機能 ----------
-// メモ用の保存キー
 function getCurrentMemoKey() {
   if (!startCourseId || !endCourseId) return null;
   return `memo_${startCourseId}-${endCourseId}`;
 }
 
 async function initializeMemoEditor() {
-  // --- 既存の Quill UI を掃除（ツールバーが兄弟要素に残る対策） ---
   const memoContainer = document.getElementById('memo-container');
   const memoEditor = document.getElementById('memo-editor');
 
-  // memo-container 内の古いツールバーを全部削除
   memoContainer.querySelectorAll('.ql-toolbar').forEach(el => el.remove());
 
-  // 念のため、memo-editor 以外に生成されてしまった古い .ql-container も削除
   memoContainer.querySelectorAll('.ql-container').forEach(el => {
     if (el !== memoEditor) el.remove();
   });
 
-  // エディタ本体の中身も空にしておく
   memoEditor.innerHTML = '';
   quill = null;
 
-  // --- ここから従来どおり初期化 ---
   const toolbarOptions = [
     [{ header: [1, 2, 3, false] }],
     ['bold', 'italic', 'underline'],
@@ -139,21 +119,18 @@ async function initializeMemoEditor() {
     theme: 'snow'
   });
 
-  // 保存済み内容の復元
   const key = getCurrentMemoKey();
   const savedMemo = localStorage.getItem(key);
   if (savedMemo) {
     try { quill.setContents(JSON.parse(savedMemo)); } catch (_) {}
   }
 
-  // 自動保存
   quill.on('text-change', () => {
     const k = getCurrentMemoKey();
     if (k) localStorage.setItem(k, JSON.stringify(quill.getContents()));
   });
 }
 
-// ---------- 便利関数（幾何） ----------
 function distPointToSeg(px, py, x1, y1, x2, y2) {
   const vx = x2 - x1, vy = y2 - y1;
   const wx = px - x1, wy = py - y1;
@@ -172,14 +149,9 @@ function circleIntersectsRect(cx, cy, r, rect) {
   return Math.hypot(cx - nx, cy - ny) <= r;
 }
 
-// ---------- 消しゴム：当たり判定で削除（ドラッグ中のみ） ----------
-// renderer.js の eraseAt 関数を置き換え
-
-// ---------- 消しゴム：当たり判定で削除（ドラッグ中のみ） ----------
 function eraseAt(pos) {
   const radius = Number(currentEraserSize) / 2;
 
-  // 画像・テキストに当たったら削除
   objectsLayer.find(node => node instanceof Konva.Image || node instanceof Konva.Text)
     .forEach(node => {
       const rect = node.getClientRect();
@@ -189,13 +161,11 @@ function eraseAt(pos) {
       }
     });
 
-  // 線に当たったら削除
   drawLayer.find('Line').forEach(line => {
     const pts = line.points();
     const half = (Number(line.strokeWidth()) || 0) / 2;
     const threshold = radius + half;
     for (let i = 0; i + 3 < pts.length; i += 2) {
-      // ★★★ 修正箇所: 最後の引数を pts[i + 3] から pts[i + 2], pts[i + 3] に修正 ★★★
       const d = distPointToSeg(pos.x, pos.y, pts[i], pts[i + 1], pts[i + 2], pts[i + 3]);
       if (d <= threshold) {
         line.destroy();
@@ -207,7 +177,7 @@ function eraseAt(pos) {
   drawLayer.batchDraw();
   objectsLayer.batchDraw();
 }
-// ---------- リサイズ ----------
+
 function handleResize() {
   if (!stage) return;
   const container = document.getElementById('editor-canvas-container');
@@ -225,7 +195,6 @@ function handleResize() {
   }
 }
 
-// ---------- 初期化 ----------
 function initializeCanvas() {
   if (stage) stage.destroy();
 
@@ -258,7 +227,6 @@ function initializeCanvas() {
     objectsLayer.setAttr('id', 'objects-layer');
     stage.add(objectsLayer);
 
-    // 画像の復元
     objectsLayer.find('Image').forEach(imageNode => {
       const imageSrc = imageNode.id();
       if (imageSrc) {
@@ -303,7 +271,6 @@ function initializeCanvas() {
     }
   );
 
-  // 既存ノードにイベント付与
   objectsLayer.find('Image, Text').forEach(node => {
     if (node.draggable && node.draggable()) addSelectAndEditEvents(node);
   });
@@ -424,7 +391,6 @@ function editText(textNode) {
   textarea.addEventListener('blur', updateText);
 }
 
-// --- ボタン ---
 clearButton.addEventListener('click', () => {
   if (!confirm('キャンバスの内容をすべて削除しますか？')) return;
   tr.nodes([]);
@@ -507,7 +473,6 @@ window.addEventListener('keydown', (e) => {
   }
 });
 
-// スライダー/色UI
 penColorButtons.forEach(button => { button.addEventListener('click', () => { currentPenColor = button.dataset.color; updatePenSizePreview(); }); });
 lineColorButtons.forEach(button => { button.addEventListener('click', () => { currentLineColor = button.dataset.color; updateLineSizePreview(); }); });
 penSizeSlider.addEventListener('input', (e) => { currentPenSize = e.target.value; updatePenSizePreview(); });
@@ -529,18 +494,14 @@ function updateLineSizePreview() {
   lineSizePreview.style.height = `${currentLineSize}px`;
 }
 
-// --- 画面遷移 ---
-// renderer.js
-
 function displayCourses(courseArray) {
   courseListDiv.innerHTML = '';
   courseArray.forEach(course => {
     const button = document.createElement('button');
     button.classList.add('course-button');
     button.dataset.courseId = course.id;
-    button.title = course.name; // マウスを乗せた時にフルネーム表示
+    button.title = course.name;
 
-    // ボタンの中身を画像とテキストに変更
     button.innerHTML = `
       <img src="${course.icon}" alt="${course.name}">
       <span>${course.name}</span>
@@ -578,7 +539,7 @@ function handleCourseClick(event) {
     screenMenu.classList.add('hidden');
     screenCanvas.classList.remove('hidden');
     initializeCanvas();
-    initializeMemoEditor(); // asyncだがawait不要（初期化の副作用でOK）
+    initializeMemoEditor();
     setActiveTool(penButton);
   }
 }
@@ -599,7 +560,6 @@ backButton.addEventListener('click', () => {
   showEndpointSelection();
 });
 
-// リサイズ監視
 window.addEventListener('resize', handleResize);
 window.addEventListener('DOMContentLoaded', () => {
   displayCourses(courses);
