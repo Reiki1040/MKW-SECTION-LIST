@@ -1,337 +1,346 @@
-/* --- 全体のスタイル --- */
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap');
 
 html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden;
-    font-family: 'M PLUS Rounded 1c', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #1a202c; /* ダークグレーの背景 */
-    color: #e2e8f0;
-    display: flex;
-    flex-direction: column;
+    margin: 0; /* 余白を排除し、全画面表示に適した土台にする */
+    padding: 0; /* 余白を排除する */
+    height: 100%; /* ビューポート高いっぱいにする */
+    overflow: hidden; /* ルートではスクロールさせない方針とする */
+    font-family: 'M PLUS Rounded 1c', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; /* 丸みのある日本語フォントを優先する */
+    background-color: #1a202c; /* ダークグレーの背景にする */
+    color: #e2e8f0; /* 明るい灰色の文字色にする */
+    display: flex; /* 全体をフレックスで縦に積む */
+    flex-direction: column; /* ヘッダー→コンテンツの縦並びにする */
 }
 
-/* --- ヘッダー（タイトルバー） --- */
+/* ヘッダー: タイトルバーの外観を整える */
 #app-header {
-    background-color: #2d3748; /* 少し明るいダークグレー */
-    padding: 10px 20px;
-    flex-shrink: 0;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    z-index: 100;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-bottom: 1px solid #4a5568;
+    background-color: #2d3748; /* 背景をやや明るいダークグレーにする */
+    padding: 10px 20px; /* ヘッダー内余白を確保する */
+    flex-shrink: 0; /* スクロール時に高さが縮まないようにする */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3); /* 影で奥行きを付ける */
+    z-index: 100; /* 上位に重ねる */
+    display: flex; /* 中身を中央寄せするためフレックスにする */
+    justify-content: center; /* 水平方向中央寄せにする */
+    align-items: center; /* 垂直方向中央寄せにする */
+    border-bottom: 1px solid #4a5568; /* 下境界のラインを付ける */
 }
 #app-title-logo {
-    height: 35px;
-    width: auto;
+    height: 35px; /* ロゴの表示高さを固定する */
+    width: auto; /* アスペクト比を維持する */
 }
 
-/* --- 画面全体のコンテナースタイル --- */
-#screen-menu { /* ★★★ ここを修正 ★★★ */
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    padding: 24px;
-    box-sizing: border-box;
-    gap: 24px;
-    overflow-y: auto; /* スクロールを有効化 */
-    padding-right: 14px; /* スクロールバー用の余白 */
+/* 画面全体のコンテナ: メニュー画面 */
+/* ★★★ ここを修正 ★★★ スクロール挙動と余白を明確化した構成とする */
+#screen-menu {
+    display: flex; /* 内部を縦に積む */
+    flex-direction: column; /* カード群などを縦方向に並べる */
+    flex-grow: 1; /* 余白を占める伸縮に対応する */
+    padding: 24px; /* 画面端の余白を確保する */
+    box-sizing: border-box; /* パディング込みでレイアウトを扱う */
+    gap: 24px; /* セクション同士の間隔を空ける */
+    overflow-y: auto; /* メニュー画面は縦スクロールを許可する */
+    padding-right: 14px; /* スクロールバー重なり対策の余白を付ける */
 }
 
+/* 画面全体のコンテナ: キャンバス画面 */
 #screen-canvas {
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-    padding: 24px;
-    box-sizing: border-box;
-    gap: 24px;
+    display: flex; /* 左右2カラムレイアウトにする */
+    flex-direction: row; /* 横方向に並べる */
+    flex-grow: 1; /* 余白を占めて拡張する */
+    padding: 24px; /* 外側余白を確保する */
+    box-sizing: border-box; /* パディング込みで計算する */
+    gap: 24px; /* パネル間の距離を空ける */
 }
 
+/* 見出し: 太く視認性の高いタイトルにする */
 h2, h4 {
-    color: #f7fafc;
-    flex-shrink: 0;
-    margin-top: 0;
-    margin-bottom: 20px;
-    font-weight: 800; /* 太めのフォント */
-    letter-spacing: 1px;
+    color: #f7fafc; /* 明度の高い文字色にする */
+    flex-shrink: 0; /* 文字の潰れを防ぐ */
+    margin-top: 0; /* 上マージンを打ち消す */
+    margin-bottom: 20px; /* 下に余白を確保する */
+    font-weight: 800; /* 強いウエイトにする */
+    letter-spacing: 1px; /* わずかに字間を広げる */
 }
 
+/* ユーティリティ: 強制的に非表示にする */
 .hidden {
-    display: none !important;
+    display: none !important; /* 重要度を上げて隠す */
 }
 
-/* --- ボタンの共通スタイル --- */
+/* ボタン共通: 浮遊感と操作感を持たせる */
 button {
-    border: none;
-    border-radius: 8px;
-    padding: 10px 18px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    border: none; /* 枠線を消す */
+    border-radius: 8px; /* 角を丸める */
+    padding: 10px 18px; /* クリックしやすいタップ領域にする */
+    font-size: 14px; /* 標準的な文字サイズにする */
+    font-weight: 700; /* 視認性を高める */
+    cursor: pointer; /* クリック可能を示す */
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); /* なめらかなアニメにする */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2); /* 控えめな影を付ける */
 }
 button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 7px 14px rgba(0,0,0,0.2);
+    transform: translateY(-2px); /* 少し持ち上げる */
+    box-shadow: 0 7px 14px rgba(0,0,0,0.2); /* 影を強める */
 }
 button:active {
-    transform: translateY(1px);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    transform: translateY(1px); /* 押し込み感を出す */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2); /* 影を弱める */
 }
 
-/* --- コース選択画面のスタイル --- */
-#course-list { /* ★★★ ここを修正 ★★★ */
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-    gap: 20px;
+/* コース選択グリッド: 自動段組でカードを並べる */
+/* ★★★ ここを修正 ★★★ 余計なスクロール指定を外し、グリッド密度を調整する */
+#course-list {
+    display: grid; /* カードをグリッド配置する */
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); /* 幅に応じて自動段組にする */
+    gap: 20px; /* カード間隔を一定にする */
     /* 以前追加したスクロール関連のスタイルを削除 */
 }
 
+/* コースボタン: 画像+テキストのカード化 */
 .course-button {
-    background-color: #2d3748;
-    border: 2px solid #4a5568;
-    color: #e2e8f0;
-    padding: 12px;
-    height: 140px; /* カードの高さを固定 */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between; /* 中の要素を均等に配置 */
-    text-align: center;
-    gap: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-    transform: none;
+    background-color: #2d3748; /* ダークなカード背景にする */
+    border: 2px solid #4a5568; /* 輪郭線でカードを際立たせる */
+    color: #e2e8f0; /* 文字のコントラストを確保する */
+    padding: 12px; /* 内側余白を付ける */
+    height: 140px; /* 高さを固定し均一なグリッドにする */
+    display: flex; /* 縦積みで中央寄せにする */
+    flex-direction: column; /* 画像→テキストの順に並べる */
+    align-items: center; /* 水平中央に寄せる */
+    justify-content: space-between; /* 上下要素の間隔を均す */
+    text-align: center; /* テキストを中央揃えにする */
+    gap: 8px; /* 画像とテキストの間隔を空ける */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2); /* 弱い影を付ける */
+    transform: none; /* 初期状態では変形しない */
 }
 
 .course-button:hover {
-    transform: translateY(-4px); /* ホバー時の浮き上がりを少し大きく */
-    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-    border-color: #63b3ed;
-    background-color: #4a5568;
+    transform: translateY(-4px); /* ホバーで少し浮かせる */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3); /* 影を強めて注目させる */
+    border-color: #63b3ed; /* 枠線をアクセントカラーにする */
+    background-color: #4a5568; /* 背景をわずかに明るくする */
 }
 
+/* コースカード内の画像: 比率を保ちつつ収める */
 .course-button img {
-    width: 100%; /* 幅を親要素に合わせる */
-    height: 70px; /* 画像の高さを固定 */
-    object-fit: contain;
-    border-radius: 4px; /* 画像の角を少し丸める */
-    box-shadow: none;
-    border: none;
-    transition: transform 0.2s ease;
+    width: 100%; /* カード幅に追従させる */
+    height: 70px; /* 高さを固定してレイアウトを安定させる */
+    object-fit: contain; /* トリミングせず収める */
+    border-radius: 4px; /* 角の丸みで統一感を出す */
+    box-shadow: none; /* 画像に影は付けない */
+    border: none; /* 枠線は不要とする */
+    transition: transform 0.2s ease; /* ズームの滑らかさを確保する */
 }
-
 .course-button:hover img {
-    transform: scale(1.03); /* ホバー時に画像を少しだけ拡大 */
+    transform: scale(1.03); /* ホバーでわずかに拡大する */
 }
 
+/* コース名: 2行で省略表示して整える */
 .course-button span {
-    display: -webkit-box;
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.3;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    height: 34px; /* 2行分の高さを確保 */
+    display: -webkit-box; /* 行数制御を可能にする */
+    font-size: 13px; /* 小さめで収まりよくする */
+    font-weight: 700; /* タイトルとしての強さを出す */
+    line-height: 1.3; /* 行間を詰めて情報量を確保する */
+    -webkit-line-clamp: 2; /* 最大2行に制限する */
+    -webkit-box-orient: vertical; /* 縦組み方向を設定する */
+    overflow: hidden; /* はみ出しを隠す */
+    height: 34px; /* 2行ぶんの高さに固定する */
 }
 
+/* 戻るボタン: 幅一杯で明確に表示する */
 #back-to-start-button {
-    width: 100%;
-    background-color: #4a5568;
-    color: #e2e8f0;
-    margin-bottom: 15px;
+    width: 100%; /* グリッド幅いっぱいにする */
+    background-color: #4a5568; /* ボタン色を統一する */
+    color: #e2e8f0; /* 文字の視認性を保つ */
+    margin-bottom: 15px; /* 下側に余白を設ける */
 }
 
-
-/* --- キャンバス画面のスタイル --- */
+/* キャンバス画面: 左エディタ+右メモの2カラム構成 */
 #main-editor-area, #memo-container {
-    background-color: #2d3748;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+    background-color: #2d3748; /* パネル背景を統一する */
+    border-radius: 12px; /* 大きめの角丸で柔らかくする */
+    padding: 20px; /* 内側余白を確保する */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2); /* 浮いたカード感を出す */
 }
 #main-editor-area {
-    display: flex;
-    flex-direction: column;
-    flex-basis: 70%;
-    min-width: 0;
+    display: flex; /* 上にツールバー、下にキャンバスを積む */
+    flex-direction: column; /* 縦積み配置にする */
+    flex-basis: 70%; /* 左カラムを広めに割り当てる */
+    min-width: 0; /* フレックス収縮時のはみ出しを防ぐ */
 }
 #editor-canvas-container {
-    flex-grow: 1;
-    background-color: white;
-    border-radius: 8px;
-    min-height: 200px;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
-    overflow: hidden;
+    flex-grow: 1; /* 余白をキャンバスに配分する */
+    background-color: white; /* 描画面は白にする */
+    border-radius: 8px; /* 角丸で統一する */
+    min-height: 200px; /* 最低高で潰れを防ぐ */
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); /* 内側の凹み影で面を強調する */
+    overflow: hidden; /* 内部のはみ出しを隠す */
 }
+
+/* ツールバー: 操作用ボタン群の行レイアウト */
 .toolbar {
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    flex-shrink: 0;
+    margin-bottom: 20px; /* キャンバスとの間隔を空ける */
+    display: flex; /* 横並びにする */
+    align-items: center; /* 縦位置を揃える */
+    gap: 10px; /* ボタン間の距離を一定にする */
+    flex-wrap: wrap; /* 画面幅に応じて折り返す */
+    flex-shrink: 0; /* 圧縮で高さが潰れないようにする */
 }
 .tool-button, #back-button {
-    background-color: #4a5568;
-    color: #e2e8f0;
+    background-color: #4a5568; /* 共通の中間色にする */
+    color: #e2e8f0; /* 文字色のコントラストを確保する */
 }
 .tool-button img {
-    height: 18px;
-    filter: invert(90%); /* アイコンを白っぽく */
-    vertical-align: middle;
+    height: 18px; /* アイコンサイズを揃える */
+    filter: invert(90%); /* ダーク背景で見やすくする */
+    vertical-align: middle; /* テキストとのベースラインを合わせる */
 }
 .tool-button.active {
-    background-color: #63b3ed; /* アクティブなボタンは明るい青 */
-    color: #1a202c;
+    background-color: #63b3ed; /* アクティブ状態を強調する */
+    color: #1a202c; /* 反転配色で可読性を上げる */
 }
 .tool-button.active img {
-    filter: invert(10%);
+    filter: invert(10%); /* 反転しすぎを戻す */
 }
 #clear-button {
-    background-color: #c53030; /* アクセントレッド */
-    color: white;
+    background-color: #c53030; /* 破壊的操作を赤で示す */
+    color: white; /* 注意喚起として白文字にする */
 }
 #clear-button:hover {
-    background-color: #e53e3e;
+    background-color: #e53e3e; /* ホバーで色を強める */
 }
 
-/* --- ツール詳細設定 --- */
+/* ツール詳細設定: 色とサイズの操作域をまとめる */
 .tool-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background-color: #4a5568;
-    padding: 8px 12px;
-    border-radius: 8px;
+    display: flex; /* 横並びで配置する */
+    align-items: center; /* 縦位置を揃える */
+    gap: 10px; /* 要素間の距離を一定にする */
+    background-color: #4a5568; /* 下地を分かりやすくする */
+    padding: 8px 12px; /* 操作しやすい余白にする */
+    border-radius: 8px; /* 角を丸める */
 }
 .color-controls, .size-controls {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    display: flex; /* 内部も横並びにする */
+    align-items: center; /* アイテムの縦位置を揃える */
+    gap: 8px; /* 要素間に余白を持たせる */
 }
+
+/* カラーボタン: 円形で色選択を示す */
 .color-button {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.5);
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease;
+    width: 28px; /* クリックしやすい直径にする */
+    height: 28px; /* 正円にする */
+    border-radius: 50%; /* 円形にする */
+    border: 2px solid rgba(255,255,255,0.5); /* 輪郭で視認性を上げる */
+    cursor: pointer; /* クリック可能を示す */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 浮き上がりを表現する */
+    transition: transform 0.2s ease; /* 拡大のアニメを滑らかにする */
 }
 .color-button:hover {
-    transform: scale(1.15);
+    transform: scale(1.15); /* ホバーで拡大して選択しやすくする */
 }
-.color-button[data-color="black"] { background-color: black; }
-.color-button[data-color="white"] { background-color: white; }
-.color-button[data-color="red"] { background-color: #e53e3e; }
-.color-button[data-color="blue"] { background-color: #4299e1; }
-.color-button[data-color="yellow"] { background-color: #ecc94b; }
-.color-button[data-color="green"] { background-color: #48bb78; }
+.color-button[data-color="black"] { background-color: black; } /* 黒 */
+.color-button[data-color="white"] { background-color: white; } /* 白 */
+.color-button[data-color="red"] { background-color: #e53e3e; } /* 赤 */
+.color-button[data-color="blue"] { background-color: #4299e1; } /* 青 */
+.color-button[data-color="yellow"] { background-color: #ecc94b; } /* 黄 */
+.color-button[data-color="green"] { background-color: #48bb78; } /* 緑 */
 
+/* サイズプレビュー: 円形でサイズ感を視覚化する */
 #pen-size-preview, #line-size-preview, #eraser-size-preview {
-    border-radius: 50%;
-    transition: all 0.1s;
-    box-sizing: border-box;
-    background-color: #cbd5e0;
+    border-radius: 50%; /* 円形にする */
+    transition: all 0.1s; /* スライダー変更時の追従を滑らかにする */
+    box-sizing: border-box; /* 枠線を含めて寸法扱いする */
+    background-color: #cbd5e0; /* 薄い灰色で視認性を確保する */
 }
 
-/* --- スタンプパネル --- */
+/* スタンプパネル: 画面左上に重ねて出す */
 #stamp-selection-panel {
-    position: absolute;
-    top: 155px; /* ツールバーの高さに合わせて調整 */
-    left: 20px;
-    background-color: #4a5568;
-    border: 1px solid #718096;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-    z-index: 20;
+    position: absolute; /* 浮かせて配置する */
+    top: 155px; /* ツールバー直下あたりに配置する */
+    left: 20px; /* 左端に寄せる */
+    background-color: #4a5568; /* パネル背景を明確にする */
+    border: 1px solid #718096; /* 輪郭線を付ける */
+    padding: 15px; /* 内側余白を確保する */
+    border-radius: 12px; /* 角を丸めてカード化する */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4); /* 強めの影で前面に出す */
+    z-index: 20; /* キャンバス上に重ねる */
 }
 #stamp-selection-panel h4 {
-    color: #f7fafc;
+    color: #f7fafc; /* タイトルを明るくする */
 }
 .stamp-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
+    display: flex; /* スタンプ群を横並びで折り返す */
+    flex-wrap: wrap; /* 画面幅に応じて折り返す */
+    gap: 5px; /* スタンプ間の余白を小さく取る */
 }
 .stamp-image {
-    width: 48px;
-    height: 48px;
-    cursor: pointer;
-    border: 2px solid transparent;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-    background-color: rgba(255,255,255,0.1);
+    width: 48px; /* タップしやすいサイズにする */
+    height: 48px; /* 正方形にする */
+    cursor: pointer; /* クリック可能を示す */
+    border: 2px solid transparent; /* ホバー時の境界強調用の下地にする */
+    border-radius: 8px; /* 角を丸める */
+    transition: all 0.2s ease; /* ホバーのアニメを滑らかにする */
+    background-color: rgba(255,255,255,0.1); /* 薄い下地を敷く */
 }
 .stamp-image:hover {
-    transform: scale(1.1);
-    border-color: #63b3ed;
+    transform: scale(1.1); /* ホバーで拡大する */
+    border-color: #63b3ed; /* アクセント色で選択感を出す */
 }
 
-/* --- テキストエディタオーバーレイ --- */
+/* テキストエディタ: キャンバス上に重ねる入力欄 */
 #text-editor {
-    position: absolute;
-    border: 2px dashed #63b3ed;
-    background-color: rgba(45, 55, 72, 0.95);
-    color: white;
-    padding: 5px;
-    font-size: 20px;
-    z-index: 100;
-    resize: none;
-    overflow: hidden;
-    border-radius: 4px;
+    position: absolute; /* キャンバス上に重ねる */
+    border: 2px dashed #63b3ed; /* 枠線で編集領域を明示する */
+    background-color: rgba(45, 55, 72, 0.95); /* 半透明のダーク下地にする */
+    color: white; /* 入力文字を白で読みやすくする */
+    padding: 5px; /* 内側余白を確保する */
+    font-size: 20px; /* 編集時に見やすいサイズにする */
+    z-index: 100; /* 前景に出す */
+    resize: none; /* 右下のリサイズは許可しない */
+    overflow: hidden; /* スクロールバーを出さない */
+    border-radius: 4px; /* 角の丸みを付ける */
 }
 
-/* --- メモ機能のスタイル --- */
+/* メモ機能: 右カラムのエディタ外観を整える */
 #memo-container {
-    display: flex;
-    flex-direction: column;
-    flex-basis: 30%;
-    min-width: 0;
+    display: flex; /* タイトルとエディタを縦に積む */
+    flex-direction: column; /* 縦方向レイアウトにする */
+    flex-basis: 30%; /* 右側は3割の幅にする */
+    min-width: 0; /* 収縮時のはみ出しを防ぐ */
 }
 #memo-editor {
-    flex-grow: 1;
-    border-radius: 8px;
-    color: #1a202c;
-    background-color: #edf2f7;
+    flex-grow: 1; /* 余白をエディタに配分する */
+    border-radius: 8px; /* 角丸で統一する */
+    color: #1a202c; /* 黒に近い文字色で読みやすくする */
+    background-color: #edf2f7; /* 明るい下地で入力視認性を上げる */
 }
+
+/* Quillテーマの上書き: ダークUIに馴染ませる */
 .ql-toolbar.ql-snow {
-    background-color: #f7fafc;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    border: none;
-    border-bottom: 1px solid #e2e8f0;
+    background-color: #f7fafc; /* ツールバーを淡色にする */
+    border-top-left-radius: 8px; /* パネル形状に合わせる */
+    border-top-right-radius: 8px; /* 同上 */
+    border: none; /* 既定の枠線を外す */
+    border-bottom: 1px solid #e2e8f0; /* 下側だけ薄い線を引く */
 }
 .ql-container.ql-snow {
-    background-color: #edf2f7;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    border: none;
+    background-color: #edf2f7; /* エディタ本文の背景を淡色にする */
+    border-bottom-left-radius: 8px; /* 角丸で統一する */
+    border-bottom-right-radius: 8px; /* 同上 */
+    border: none; /* 既定の枠線を外す */
 }
 
-/* --- スクロールバーのスタイル --- */
+/* スクロールバー*/
 ::-webkit-scrollbar {
-    width: 12px;
+    width: 12px; /*つまみ幅の太さ*/
 }
-
 ::-webkit-scrollbar-track {
-    background: #2d3748; /* スクロールバーの背景色 */
-    border-radius: 10px;
+    background: #2d3748; /*トラック色*/
+    border-radius: 10px; /*丸みだし*/
 }
-
 ::-webkit-scrollbar-thumb {
-    background-color: #718096; /* スクロールバーのつまみ部分 */
-    border-radius: 10px;
-    border: 3px solid #2d3748; /* つまみの周りに余白を作る */
+    background-color: #718096;
+    border: 3px solid #2d3748;
 }
-
 ::-webkit-scrollbar-thumb:hover {
     background-color: #a0aec0;
 }
